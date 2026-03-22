@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIlytic – Bezpieczna Automatyzacja AI dla E-commerce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #181818;
+    --card2: #1e1e1e;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.14);
+    --green: #d4d4d4;
+    --green-dim: #a0a0a0;
+    --green-glow: rgba(220,220,220,0.12);
+    --green-glow2: rgba(220,220,220,0.05);
+    --text: #f2f2f2;
+    --muted: #888888;
+    --muted2: #555555;
+    --accent2: #bbbbbb;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 5vw;
+    background: rgba(8,10,12,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem;
+    color: var(--text); text-decoration: none; letter-spacing: -0.02em;
+  }
+  .logo span { color: var(--muted); font-weight: 400; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--green); color: var(--black); border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem;
+    padding: 0.6rem 1.4rem; border-radius: 8px; text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .nav-cta:hover { background: #ffffff; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 8rem 5vw 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 30%, rgba(200,200,200,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 50% at 20% 80%, rgba(160,160,160,0.04) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: linear-gradient(var(--border2) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border2) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-inner {
+    max-width: 1100px; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(212,212,212,0.08); border: 1px solid rgba(212,212,212,0.2);
+    color: var(--green); font-size: 0.78rem; font-weight: 500;
+    padding: 0.35rem 0.9rem; border-radius: 100px; margin-bottom: 1.5rem;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .badge-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+  h1 {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 800; letter-spacing: -0.035em;
+    margin-bottom: 1.5rem; color: var(--text);
+  }
+  h1 .accent { color: var(--green); }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted); line-height: 1.7;
+    max-width: 480px; margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green); color: var(--black); border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem;
+    padding: 0.85rem 2rem; border-radius: 10px; text-decoration: none;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: #ffffff; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,200,200,0.2); }
+  .btn-secondary {
+    background: transparent; color: var(--text); cursor: pointer;
+    font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.95rem;
+    padding: 0.85rem 2rem; border-radius: 10px; text-decoration: none;
+    border: 1px solid var(--border2); transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 3rem; padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--text); }
+  .stat-label { font-size: 0.82rem; color: var(--muted); }
+  .stat-green { color: var(--green); }
+
+  /* HERO VISUAL */
+  .hero-visual { position: relative; }
+  .hero-card {
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: 18px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green-dim), transparent);
+  }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem; }
+  .card-dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f56; } .dot-y { background: #ffbd2e; } .dot-g { background: #27c93f; }
+  .card-title { font-size: 0.78rem; color: var(--muted); font-family: 'DM Sans', monospace; }
+  .flow-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0.8rem 1rem; border-radius: 10px;
+    margin-bottom: 0.6rem;
+    font-size: 0.88rem;
+  }
+  .flow-item.active { background: rgba(212,212,212,0.06); border: 1px solid rgba(212,212,212,0.15); }
+  .flow-item.idle { background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+  .flow-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .fi-green { background: rgba(212,212,212,0.1); }
+  .fi-blue { background: rgba(180,180,180,0.1); }
+  .fi-amber { background: rgba(150,150,150,0.12); }
+  .flow-label { color: var(--text); font-weight: 500; }
+  .flow-sub { color: var(--muted); font-size: 0.78rem; }
+  .flow-status { margin-left: auto; font-size: 0.75rem; font-weight: 600; font-family: 'Syne', sans-serif; }
+  .status-ok { color: var(--green); }
+  .status-run { color: var(--accent2); }
+  .mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 40px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .bar { background: rgba(212,212,212,0.15); border-radius: 4px 4px 0 0; flex: 1; transition: all 0.3s; }
+  .bar.hi { background: var(--green); }
+  .floating-badge {
+    position: absolute; top: -12px; right: 20px;
+    background: var(--green); color: var(--black);
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.75rem;
+    padding: 0.3rem 0.8rem; border-radius: 100px; white-space: nowrap;
+  }
+
+  /* PROBLEMS */
+  .section { padding: 6rem 5vw; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 700;
+    color: var(--green); letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
+  h2 .dim { color: var(--muted); }
+  .section-lead { font-size: 1.1rem; color: var(--muted); max-width: 560px; margin-bottom: 3.5rem; line-height: 1.7; }
+
+  .problems-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--border); border-radius: 20px; overflow: hidden; }
+  .problem-card {
+    background: var(--card); padding: 2rem 1.8rem;
+    transition: background 0.25s;
+  }
+  .problem-card:hover { background: var(--card2); }
+  .problem-num {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3rem;
+    color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 1rem;
+    letter-spacing: -0.05em;
+  }
+  .problem-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .problem-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--text); }
+  .problem-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+  /* HOW IT WORKS */
+  .hiw-section { background: var(--dark); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+  .steps::before {
+    content: ''; position: absolute; top: 36px; left: 12.5%; right: 12.5%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border2), var(--green-dim), var(--border2), transparent);
+  }
+  .step { padding: 0 1.5rem 2rem; text-align: center; position: relative; }
+  .step-circle {
+    width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem;
+    position: relative; z-index: 1;
+    border: 1px solid var(--border2); background: var(--dark);
+  }
+  .step-circle.lit {
+    background: rgba(212,212,212,0.08); border-color: var(--green);
+    color: var(--green); box-shadow: 0 0 30px rgba(180,180,180,0.12);
+  }
+  .step-circle.dim { color: var(--muted2); }
+  .step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .step p { font-size: 0.85rem; color: var(--muted); }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .feat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    transition: border-color 0.25s, transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .feat-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+  .feat-card.big { grid-column: span 2; }
+  .feat-pill {
+    display: inline-block; background: rgba(212,212,212,0.08); color: var(--green);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.25rem 0.7rem; border-radius: 100px; margin-bottom: 1rem;
+  }
+  .feat-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .feat-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+  .feat-list { list-style: none; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .feat-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; color: var(--muted); }
+  .feat-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .feat-big-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .integrations { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; }
+  .int-badge {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 0.4rem 0.9rem;
+    font-size: 0.82rem; color: var(--muted); font-weight: 500;
+    transition: all 0.2s;
+  }
+  .int-badge:hover { background: rgba(0,232,122,0.06); border-color: rgba(0,232,122,0.3); color: var(--text); }
+
+  /* SECURITY */
+  .security-section { background: var(--dark); }
+  .security-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .sec-visual {
+    background: var(--card); border: 1px solid var(--border2);
+    border-radius: 20px; padding: 2.5rem; position: relative;
+    overflow: hidden;
+  }
+  .sec-visual::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 180px;
+    background: radial-gradient(ellipse at 50% 100%, rgba(180,180,180,0.06), transparent 70%);
+  }
+  .sec-shield { font-size: 4rem; text-align: center; margin-bottom: 1.5rem; }
+  .sec-rows { display: flex; flex-direction: column; gap: 12px; }
+  .sec-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8rem 1rem; border-radius: 10px;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  }
+  .sec-row-label { font-size: 0.88rem; color: var(--muted); }
+  .sec-row-val { font-size: 0.82rem; font-weight: 600; color: var(--green); font-family: 'Syne', sans-serif; }
+  .security-points { display: flex; flex-direction: column; gap: 1.5rem; }
+  .sec-point { display: flex; gap: 1rem; }
+  .sec-ico { width: 44px; height: 44px; border-radius: 10px; background: rgba(212,212,212,0.08); border: 1px solid rgba(212,212,212,0.15); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .sec-point h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .sec-point p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .price-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem;
+    position: relative; transition: transform 0.2s, border-color 0.2s;
+  }
+  .price-card:hover { transform: translateY(-4px); }
+  .price-card.featured {
+    border-color: var(--green);
+    background: linear-gradient(135deg, rgba(212,212,212,0.04) 0%, var(--card) 60%);
+  }
+  .price-card.featured::before {
+    content: 'Najpopularniejszy'; position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+    background: var(--green); color: var(--black); font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 0.25rem 1rem; border-radius: 100px; white-space: nowrap;
+  }  .price-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .price-amount { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.8rem; letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.3rem; }
+  .price-period { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 2rem; }
+  .price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; color: var(--muted); }
+  .price-features li .ck { color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .price-features li .cx { color: var(--muted2); flex-shrink: 0; }
+  .btn-plan {
+    width: 100%; padding: 0.8rem; border-radius: 10px; border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem;
+    letter-spacing: 0.03em; transition: all 0.2s; text-decoration: none; display: block; text-align: center;
+  }
+  .btn-plan-green { background: var(--green); color: var(--black); }
+  .btn-plan-green:hover { background: #ffffff; transform: translateY(-1px); }
+  .btn-plan-outline { background: transparent; color: var(--text); border: 1px solid var(--border2); }
+  .btn-plan-outline:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+
+  /* TESTIMONIALS */
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .testi-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.8rem;
+  }
+  .testi-stars { color: var(--green); font-size: 0.9rem; margin-bottom: 0.8rem; letter-spacing: 2px; }
+  .testi-text { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(212,212,212,0.1); border: 1px solid rgba(212,212,212,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--text);
+    flex-shrink: 0;
+  }
+  .testi-name { font-size: 0.88rem; font-weight: 600; }
+  .testi-role { font-size: 0.78rem; color: var(--muted); }
+
+  /* CTA */
+  .cta-section {
+    background: linear-gradient(135deg, rgba(180,180,180,0.05) 0%, transparent 50%),
+      linear-gradient(225deg, rgba(120,120,120,0.04) 0%, transparent 50%);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .cta-inner { text-align: center; max-width: 700px; margin: 0 auto; }
+  .cta-inner h2 { margin-bottom: 1.2rem; }
+  .cta-inner p { color: var(--muted); font-size: 1.1rem; margin-bottom: 2.5rem; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .trust-badges { display: flex; justify-content: center; gap: 2rem; margin-top: 2.5rem; flex-wrap: wrap; }
+  .trust-badge { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+  .trust-badge-icon { color: var(--green); font-size: 0.9rem; }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 5vw 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
+  .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; margin-bottom: 0.8rem; }
+  .footer-logo span { color: var(--muted); font-weight: 400; }
+  .footer-tagline { font-size: 0.85rem; color: var(--muted); max-width: 260px; line-height: 1.6; }
+  .footer-col h5 { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted2); margin-bottom: 1rem; }
+  .footer-col a { display: block; color: var(--muted); text-decoration: none; font-size: 0.88rem; margin-bottom: 0.6rem; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--text); }
+  .footer-bottom { max-width: 1100px; margin: 2.5rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-bottom p { font-size: 0.82rem; color: var(--muted2); }
+
+  /* SCROLL ANIMATION */
+  [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  [data-reveal].visible { opacity: 1; transform: translateY(0); }
+  [data-reveal="delay1"] { transition-delay: 0.1s; }
+  [data-reveal="delay2"] { transition-delay: 0.2s; }
+  [data-reveal="delay3"] { transition-delay: 0.3s; }
+  [data-reveal="delay4"] { transition-delay: 0.4s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-visual { display: none; }
+    .problems-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .steps::before { display: none; }
+    .features-grid { grid-template-columns: 1fr; }
+    .feat-card.big { grid-column: span 1; }
+    .feat-big-inner { grid-template-columns: 1fr; }
+    .security-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">AI<span>lytic</span></a>
+  <ul class="nav-links">
+    <li><a href="#jak-to-dziala">Jak to działa</a></li>
+    <li><a href="#funkcje">Funkcje</a></li>
+    <li><a href="#bezpieczenstwo">Bezpieczeństwo</a></li>
+    <li><a href="#cennik">Cennik</a></li>
+  </ul>
+  <a href="#kontakt" class="nav-cta">Bezpłatna konsultacja →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-left" data-reveal>
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Platforma dedykowana dla e-commerce
+      </div>
+      <h1>AI dla Twojego<br>sklepu, <span class="accent">bez ryzyka.</span></h1>
+      <p class="hero-sub">Wdrażamy automatyzację AI w Twoim e-commerce w 14 dni. Żadnych danych przesyłanych do zewnętrznych serwerów. Żadnych ukrytych kosztów. Tylko realne oszczędności czasu.</p>
+      <div class="hero-actions">
+        <a href="#kontakt" class="btn-primary">Zacznij za darmo <span>→</span></a>
+        <a href="#jak-to-dziala" class="btn-secondary">▶ Zobacz jak to działa</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">14 <span class="stat-green">dni</span></div>
+          <div class="stat-label">czas wdrożenia</div>
+        </div>
+        <div>
+          <div class="stat-num">3x</div>
+          <div class="stat-label">szybsza obsługa</div>
+        </div>
+        <div>
+          <div class="stat-num stat-green">RODO</div>
+          <div class="stat-label">zgodność gwarantowana</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" data-reveal data-reveal="delay2">
+      <div class="hero-card">
+        <div class="floating-badge">● Live — 14 procesów</div>
+        <div class="card-header">
+          <div class="card-dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+          <div class="card-title">AIlytic Dashboard</div>
+        </div>
+        <div class="flow-item active">
+          <div class="flow-icon fi-green">📦</div>
+          <div>
+            <div class="flow-label">Obsługa zamówień</div>
+            <div class="flow-sub">Automatyczne potwierdzenia i tracking</div>
+          </div>
+          <div class="flow-status status-ok">AKTYWNY</div>
+        </div>
+        <div class="flow-item active">
+          <div class="flow-icon fi-blue">🤖</div>
+          <div>
+            <div class="flow-label">AI Chatbot obsługi</div>
+            <div class="flow-sub">Odpowiada na 84% pytań klientów</div>
+          </div>
+          <div class="flow-status status-ok">AKTYWNY</div>
+        </div>
+        <div class="flow-item active">
+          <div class="flow-icon fi-amber">📊</div>
+          <div>
+            <div class="flow-label">Raporty & Analityka</div>
+            <div class="flow-sub">Codzienne podsumowanie sprzedaży</div>
+          </div>
+          <div class="flow-status status-run">DZIAŁA</div>
+        </div>
+        <div class="flow-item idle">
+          <div class="flow-icon fi-green">✉️</div>
+          <div>
+            <div class="flow-label">Email Marketing AI</div>
+            <div class="flow-sub">Segmentacja i personalizacja</div>
+          </div>
+          <div class="flow-status status-ok">GOTOWY</div>
+        </div>
+        <div class="mini-chart">
+          <div class="bar" style="height:30%"></div>
+          <div class="bar" style="height:55%"></div>
+          <div class="bar" style="height:45%"></div>
+          <div class="bar hi" style="height:80%"></div>
+          <div class="bar" style="height:65%"></div>
+          <div class="bar hi" style="height:90%"></div>
+          <div class="bar" style="height:75%"></div>
+          <div class="bar hi" style="height:100%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS -->
+<section class="section" id="problemy">
+  <div class="section-inner">
+    <p class="section-tag" data-reveal>Rozumiemy Twoje wyzwania</p>
+    <h2 data-reveal>Trzy problemy, które <span class="dim">hamują Twój e-commerce</span></h2>
+    <p class="section-lead" data-reveal>Właściciele sklepów online tracą średnio 3 godziny dziennie na powtarzalne zadania, które AI może wykonać za nich — bezpiecznie i błyskawicznie.</p>
+    <div class="problems-grid" data-reveal>
+      <div class="problem-card">
+        <div class="problem-num">01</div>
+        <div class="problem-icon">⏰</div>
+        <h3>Brak czasu na wszystko</h3>
+        <p>Obsługa zamówień, odpowiedzi na maile, aktualizacje stanów magazynowych — wszystko spada na Ciebie i Twój zespół, zamiast być zautomatyzowane.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">02</div>
+        <div class="problem-icon">🔗</div>
+        <h3>Systemy nie rozmawiają ze sobą</h3>
+        <p>Twój sklep, CRM, magazyn i platforma mailingowa to oddzielne wyspy. Ręczne przepisywanie danych między nimi generuje błędy i pochłania godziny pracy.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">03</div>
+        <div class="problem-icon">🔒</div>
+        <h3>Strach przed danymi i RODO</h3>
+        <p>Obawiasz się, że dane Twoich klientów trafią gdzieś, gdzie nie powinny. Słusznie — dlatego nasze rozwiązanie działa w Twojej infrastrukturze lub w certyfikowanej chmurze EU.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section hiw-section" id="jak-to-dziala">
+  <div class="section-inner">
+    <p class="section-tag" data-reveal>Prosty proces</p>
+    <h2 data-reveal>Od rozmowy do <span class="dim">działającego systemu</span></h2>
+    <p class="section-lead" data-reveal>Cztery kroki do pełnej automatyzacji. Bez miesiącami trwających wdrożeń i dziesiątek spotkań.</p>
+    <div class="steps">
+      <div class="step" data-reveal>
+        <div class="step-circle lit">1</div>
+        <h3>Bezpłatna audyt</h3>
+        <p>Analizujemy Twoje procesy i identyfikujemy, co można zautomatyzować jako pierwsze dla maksymalnego zysku czasu.</p>
+      </div>
+      <div class="step" data-reveal data-reveal="delay1">
+        <div class="step-circle lit">2</div>
+        <h3>Projekt & integracje</h3>
+        <p>Projektujemy przepływy i łączymy Twoje narzędzia — Shopify, BaseLinker, Allegro, Fakturownia i inne.</p>
+      </div>
+      <div class="step" data-reveal data-reveal="delay2">
+        <div class="step-circle lit">3</div>
+        <h3>Wdrożenie 14 dni</h3>
+        <p>Uruchamiamy pierwsze automaty. Testujemy razem z Tobą. Dbamy o to, by nie zakłócać bieżącej sprzedaży.</p>
+      </div>
+      <div class="step" data-reveal data-reveal="delay3">
+        <div class="step-circle dim">4</div>
+        <h3>Wsparcie & rozwój</h3>
+        <p>Monitorujemy, optymalizujemy i rozwijamy automatyzacje w miarę jak rośnie Twój biznes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="funkcje">
+  <div class="section-inner">
+    <p class="section-tag" data-reveal>Co automatyzujemy</p>
+    <h2 data-reveal>Narzędzia, które <span class="dim">pracują za Ciebie</span></h2>
+    <p class="section-lead" data-reveal>Gotowe moduły AI dostosowane do realiów polskiego e-commerce. Każdy łączy się z systemami, których już używasz.</p>
+    <div class="features-grid" data-reveal>
+      <div class="feat-card">
+        <span class="feat-pill">Obsługa klienta</span>
+        <h3>AI Chatbot 24/7</h3>
+        <p>Odpowiada na pytania o statusy zamówień, zwroty i produkty. Przekazuje trudne sprawy do człowieka z pełnym kontekstem rozmowy.</p>
+        <ul class="feat-list">
+          <li>Integracja z LiveChat, Tidio, WhatsApp</li>
+          <li>Uczenie na podstawie Twoich FAQ</li>
+          <li>Obsługa w języku polskim i angielskim</li>
+        </ul>
+      </div>
+      <div class="feat-card">
+        <span class="feat-pill">Zamówienia</span>
+        <h3>Automatyzacja procesów</h3>
+        <p>Potwierdzenia zamówień, synchronizacja stanów, generowanie faktur, powiadomienia o wysyłce — wszystko bez Twojego udziału.</p>
+        <ul class="feat-list">
+          <li>BaseLinker, Shopify, WooCommerce</li>
+          <li>Automatyczne faktury (Fakturownia, iFirma)</li>
+          <li>Alerty o problemach z dostawą</li>
+        </ul>
+      </div>
+      <div class="feat-card big">
+        <div class="feat-big-inner">
+          <div>
+            <span class="feat-pill">Integracje</span>
+            <h3>Łączymy wszystko, czego używasz</h3>
+            <p>Nie musisz zmieniać systemów, do których jesteś przyzwyczajony. Budujemy mosty między nimi, żeby dane przepływały automatycznie.</p>
+            <ul class="feat-list">
+              <li>Ponad 80 gotowych konektorów</li>
+              <li>API na zamówienie dla niestandardowych systemów</li>
+              <li>Synchronizacja w czasie rzeczywistym</li>
+              <li>Jedno centrum zarządzania wszystkim</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;letter-spacing:0.05em;text-transform:uppercase;font-weight:600;">Obsługiwane platformy</p>
+            <div class="integrations">
+              <span class="int-badge">Shopify</span>
+              <span class="int-badge">WooCommerce</span>
+              <span class="int-badge">Allegro</span>
+              <span class="int-badge">BaseLinker</span>
+              <span class="int-badge">Fakturownia</span>
+              <span class="int-badge">iFirma</span>
+              <span class="int-badge">Shoper</span>
+              <span class="int-badge">PrestaShop</span>
+              <span class="int-badge">InPost</span>
+              <span class="int-badge">DPD</span>
+              <span class="int-badge">FedEx</span>
+              <span class="int-badge">Mailchimp</span>
+              <span class="int-badge">Klaviyo</span>
+              <span class="int-badge">Zapier</span>
+              <span class="int-badge">+ 70 więcej</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-pill">Marketing</span>
+        <h3>Personalizacja AI</h3>
+        <p>Automatyczne kampanie email na podstawie zachowania klientów. AI dobiera treść, moment wysyłki i segmenty.</p>
+        <ul class="feat-list">
+          <li>Odzyskiwanie porzuconych koszyków</li>
+          <li>Rekomendacje produktów</li>
+          <li>Dynamiczne ceny i promocje</li>
+        </ul>
+      </div>
+      <div class="feat-card">
+        <span class="feat-pill">Analityka</span>
+        <h3>Raporty i prognozy</h3>
+        <p>Codzienne podsumowania sprzedaży, prognozy stanów magazynowych i alerty o anomaliach — bezpośrednio na Twój telefon.</p>
+        <ul class="feat-list">
+          <li>Codzienny brief w WhatsApp/SMS</li>
+          <li>Prognoza zapotrzebowania na 30 dni</li>
+          <li>Wykrywanie trendów i anomalii</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="section security-section" id="bezpieczenstwo">
+  <div class="section-inner">
+    <div class="security-grid">
+      <div data-reveal>
+        <p class="section-tag">Bezpieczeństwo i zgodność</p>
+        <h2>Twoje dane<br><span class="dim">zostają Twoje</span></h2>
+        <p style="color:var(--muted);margin-bottom:2.5rem;line-height:1.7;">W przeciwieństwie do wielu narzędzi AI, nie wysyłamy Twoich danych do zewnętrznych serwerów do trenowania modeli. Działamy w Twojej infrastrukturze lub w certyfikowanej chmurze EU.</p>
+        <div class="security-points">
+          <div class="sec-point">
+            <div class="sec-ico">🇪🇺</div>
+            <div>
+              <h4>Serwery w Polsce i EU</h4>
+              <p>Wszystkie dane przetwarzane są na serwerach zlokalizowanych w Unii Europejskiej. Pełna zgodność z RODO.</p>
+            </div>
+          </div>
+          <div class="sec-point">
+            <div class="sec-ico">🔐</div>
+            <div>
+              <h4>Szyfrowanie end-to-end</h4>
+              <p>Dane szyfrowane są w spoczynku (AES-256) i podczas transmisji (TLS 1.3). Klucze szyfrowania należą wyłącznie do Ciebie.</p>
+            </div>
+          </div>
+          <div class="sec-point">
+            <div class="sec-ico">📋</div>
+            <div>
+              <h4>Umowa powierzenia danych (DPA)</h4>
+              <p>Podpisujemy standardową umowę powierzenia przetwarzania danych osobowych. Jesteś w pełni chroniony prawnie.</p>
+            </div>
+          </div>
+          <div class="sec-point">
+            <div class="sec-ico">👁️</div>
+            <div>
+              <h4>Pełna audytowalność</h4>
+              <p>Każda operacja jest logowana. Możesz w każdej chwili zobaczyć, co system zrobił z danymi Twoich klientów.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-reveal data-reveal="delay2">
+        <div class="sec-visual">
+          <div class="sec-shield">🛡️</div>
+          <div class="sec-rows">
+            <div class="sec-row">
+              <span class="sec-row-label">Certyfikat ISO 27001</span>
+              <span class="sec-row-val">✓ ZGODNOŚĆ</span>
+            </div>
+            <div class="sec-row">
+              <span class="sec-row-label">RODO / GDPR</span>
+              <span class="sec-row-val">✓ ZGODNOŚĆ</span>
+            </div>
+            <div class="sec-row">
+              <span class="sec-row-label">Szyfrowanie danych</span>
+              <span class="sec-row-val">AES-256</span>
+            </div>
+            <div class="sec-row">
+              <span class="sec-row-label">Lokalizacja serwerów</span>
+              <span class="sec-row-val">🇵🇱 PL / 🇩🇪 DE</span>
+            </div>
+            <div class="sec-row">
+              <span class="sec-row-label">Backup danych</span>
+              <span class="sec-row-val">CO 6H</span>
+            </div>
+            <div class="sec-row">
+              <span class="sec-row-label">Uptime SLA</span>
+              <span class="sec-row-val">99.9%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-tag" data-reveal>Opinie klientów</p>
+    <h2 data-reveal>Co mówią właściciele <span class="dim">sklepów online</span></h2>
+    <p class="section-lead" data-reveal>Realne rezultaty od właścicieli e-commerce, którzy już korzystają z AIlytic.</p>
+    <div class="testi-grid" data-reveal>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Odzyskałem dosłownie 4 godziny dziennie. Obsługa klienta jest teraz prawie w pełni zautomatyzowana, a mój zespół skupia się na tym, co naprawdę ważne. Wdrożenie zajęło 12 dni."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MK</div>
+          <div>
+            <div class="testi-name">Marcin Kowalczyk</div>
+            <div class="testi-role">CEO, SportGear.pl · 2400 zamówień/mc</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Bałam się o bezpieczeństwo danych moich klientów — po rozmowie z zespołem byłam spokojna. Umowa DPA, serwery w EU, pełna przejrzystość. Teraz polecam wszystkim w mojej branży."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AW</div>
+          <div>
+            <div class="testi-name">Agnieszka Wiśniewska</div>
+            <div class="testi-role">Właścicielka, Zielarnia24.pl</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Integracja z BaseLinker i Allegro działała od razu. Zamówienia, faktury, powiadomienia — wszystko się kręci samo. ROI osiągnąłem w 6. tygodniu."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">PT</div>
+          <div>
+            <div class="testi-name">Piotr Tokarski</div>
+            <div class="testi-role">Dyrektor, TechAccessories.eu · 5000+ SKU</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="cennik" style="background: var(--dark);">
+  <div class="section-inner">
+    <p class="section-tag" data-reveal>Transparentne ceny</p>
+    <h2 data-reveal>Wybierz plan <span class="dim">dopasowany do Ciebie</span></h2>
+    <p class="section-lead" data-reveal>Żadnych niespodzianek. Wiesz dokładnie, za co płacisz. Możesz zrezygnować w dowolnym momencie.</p>
+    <div class="pricing-grid" data-reveal>
+      <div class="price-card">
+        <div class="price-name">Start</div>
+        <div class="price-amount">990 <span style="font-size:1.2rem;color:var(--muted)">zł</span></div>
+        <div class="price-period">/ miesiąc netto</div>
+        <ul class="price-features">
+          <li><span class="ck">✓</span> 3 automatyzacje</li>
+          <li><span class="ck">✓</span> Do 2 integracji</li>
+          <li><span class="ck">✓</span> AI Chatbot podstawowy</li>
+          <li><span class="ck">✓</span> Email support</li>
+          <li><span class="cx">—</span> Raportowanie zaawansowane</li>
+          <li><span class="cx">—</span> Dedykowany opiekun</li>
+        </ul>
+        <a href="#kontakt" class="btn-plan btn-plan-outline">Zacznij teraz</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-name">Wzrost</div>
+        <div class="price-amount">2 490 <span style="font-size:1.2rem;color:var(--muted)">zł</span></div>
+        <div class="price-period">/ miesiąc netto</div>
+        <ul class="price-features">
+          <li><span class="ck">✓</span> Nielimitowane automatyzacje</li>
+          <li><span class="ck">✓</span> Do 10 integracji</li>
+          <li><span class="ck">✓</span> AI Chatbot + Voice</li>
+          <li><span class="ck">✓</span> Chat & telefon 24/7</li>
+          <li><span class="ck">✓</span> Raporty i prognozy AI</li>
+          <li><span class="ck">✓</span> Dedykowany opiekun</li>
+        </ul>
+        <a href="#kontakt" class="btn-plan btn-plan-green">Wybieram Wzrost</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Enterprise</div>
+        <div class="price-amount" style="font-size:2rem;">Wycena</div>
+        <div class="price-period">indywidualna</div>
+        <ul class="price-features">
+          <li><span class="ck">✓</span> Własna infrastruktura</li>
+          <li><span class="ck">✓</span> Nielimitowane integracje</li>
+          <li><span class="ck">✓</span> Custom AI modele</li>
+          <li><span class="ck">✓</span> SLA 99.99%</li>
+          <li><span class="ck">✓</span> Wdrożenie on-premise</li>
+          <li><span class="ck">✓</span> Priorytetowe wsparcie</li>
+        </ul>
+        <a href="#kontakt" class="btn-plan btn-plan-outline">Porozmawiajmy</a>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--muted2);font-size:0.82rem;margin-top:1.5rem;">Wszystkie plany zawierają umowę DPA, backup danych i bezpłatne onboardowanie. Ceny netto, bez VAT.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section" id="kontakt">
+  <div class="section-inner">
+    <div class="cta-inner" data-reveal>
+      <p class="section-tag" style="text-align:center">Zacznij dziś</p>
+      <h2>Bezpłatna konsultacja<br><span class="dim">w 30 minut</span></h2>
+      <p>Pokażemy Ci dokładnie, ile czasu możesz odzyskać w swoim sklepie, które procesy warto zautomatyzować jako pierwsze i ile to kosztuje.</p>
+      <div class="cta-actions">
+        <a href="mailto:hello@ailytic.pl" class="btn-primary" style="font-size:1rem;padding:1rem 2.5rem;">Umów bezpłatną rozmowę →</a>
+        <a href="tel:+48500000000" class="btn-secondary" style="font-size:1rem;padding:1rem 2rem;">📞 +48 500 000 000</a>
+      </div>
+      <div class="trust-badges">
+        <div class="trust-badge"><span class="trust-badge-icon">✓</span> Bez zobowiązań</div>
+        <div class="trust-badge"><span class="trust-badge-icon">✓</span> Odpowiadamy w 2h</div>
+        <div class="trust-badge"><span class="trust-badge-icon">✓</span> Bezpłatna analiza procesów</div>
+        <div class="trust-badge"><span class="trust-badge-icon">✓</span> NDA na życzenie</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">AI<span>lytic</span></div>
+      <p class="footer-tagline">Bezpieczna automatyzacja AI dla polskich sklepów e-commerce. Wdrożenie w 14 dni.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Produkt</h5>
+      <a href="#funkcje">Funkcje</a>
+      <a href="#integracje">Integracje</a>
+      <a href="#cennik">Cennik</a>
+      <a href="#jak-to-dziala">Jak to działa</a>
+    </div>
+    <div class="footer-col">
+      <h5>Firma</h5>
+      <a href="#">O nas</a>
+      <a href="#">Blog</a>
+      <a href="#">Case studies</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+    <div class="footer-col">
+      <h5>Prawne</h5>
+      <a href="#">Polityka prywatności</a>
+      <a href="#">Regulamin</a>
+      <a href="#">Polityka cookies</a>
+      <a href="#">RODO / DPA</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 AIlytic Sp. z o.o. Wszelkie prawa zastrzeżone.</p>
+    <p style="color:var(--muted2)">Serwery w 🇵🇱 Polsce i 🇩🇪 Niemczech · RODO zgodność · ISO 27001</p>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('[data-reveal]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+const bars = document.querySelectorAll('.bar');
+let i = 0;
+setInterval(() => {
+  bars.forEach(b => b.classList.remove('hi'));
+  bars[i % bars.length].classList.add('hi');
+  bars[(i+2) % bars.length].classList.add('hi');
+  i++;
+}, 900);
+</script>
+</body>
+</html>
